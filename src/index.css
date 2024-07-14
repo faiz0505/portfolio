@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.hero {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  /* background-color: black; */
+}
+
+.hero::before {
+  content: "";
+  background-image: url("./assets/bg-image-desktop.jfif");
+  background-size: cover;
+  /* background-position: center; */
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  opacity: 0.5;
+}
+
+.paddings {
+  @apply p-2 sm:px-4 md:px-8 lg:px-12;
+}
+
+.primary-btn {
+  @apply px-5 py-1.5 bg-blue-700 rounded hover:bg-blue-500;
+}
+
+.link::after:hover{
+    @apply content-none border-rose-700
+    
+}
