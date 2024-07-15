@@ -23,14 +23,32 @@
 }
 
 .paddings {
-  @apply p-2 sm:px-4 md:px-8 lg:px-12;
+  @apply p-2 sm:px-4 md:px-12 lg:px-20;
 }
 
-.primary-btn {
-  @apply px-5 py-1.5 bg-blue-700 rounded hover:bg-blue-500;
+.btn {
+  @apply px-5 py-1.5  rounded;
 }
+.link {
+  position: relative;
+}
+.link::after {
+  content: "";
+  background: #286f6c;
+  height: 3px;
+  width: 0;
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  transition: 0.5s;
+}
+.link:hover::after {
+  width: 100%;
+}
+/* .link {
+  @apply relative after:content-none after:bg-secondary after:h-1 after:absolute after:w-4  after:left-0 after:-bottom-1.5 after:transition-all duration-75 hover:after:w-6;
+} */
 
-.link::after:hover{
-    @apply content-none border-rose-700
-    
+.shape {
+  border-radius: 30% 70% 70% 30% / 30% 48% 52% 70%;
 }
