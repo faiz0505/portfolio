@@ -88,7 +88,7 @@ export default function Hero() {
         </svg>
       </div>
 
-      <div className="relative z-20 w-full max-w-[1536px] mx-auto px-6 lg:px-12 pt-28 pb-12 md:pt-0 md:pb-0 h-full min-h-screen flex flex-col md:flex-row items-center justify-start pointer-events-none">
+      <div className="relative z-20 w-full max-w-[1536px] mx-auto px-6 lg:px-12 pt-24 pb-12 md:pt-0 md:pb-0 h-full min-h-screen flex flex-col md:flex-row items-center justify-start pointer-events-none">
         
         {/* Left Content */}
         <motion.div 
@@ -146,6 +146,7 @@ export default function Hero() {
                 src="/profile.png"
                 alt="Faiz Ali"
                 fill
+                sizes="(max-width: 768px) 80vw, 50vw"
                 className="object-contain object-bottom drop-shadow-[0_0_15px_rgba(255,94,0,0.5)]"
                 priority
               />
@@ -243,6 +244,7 @@ export default function Hero() {
             src="/profile.png"
             alt="Faiz Ali"
             fill
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="object-contain object-bottom rotate-3 drop-shadow-[0_0_5px_rgba(255,94,0,0.7)] hover:drop-shadow-[0_0_40px_rgba(255,94,0,0.7)] transition-all duration-500 "
             priority
           />

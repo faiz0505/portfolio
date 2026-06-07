@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
 
 const inter = Inter({
@@ -7,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  metadataBase: new URL('https://www.faizali.dev'), // Update this with your actual production domain
+  metadataBase: new URL('https://faiz-ali-dev.vercel.app/'),
   title: "Faiz Ali | Fullstack Developer",
   description: "Premium Portfolio of Faiz Ali, Frontend Web & Mobile Developer specializing in React, Next.js, and modern UI/UX design.",
   keywords: ["Faiz Ali", "Fullstack Developer", "Frontend Developer", "Mobile Developer", "React", "Next.js", "React Native", "Tailwind CSS", "UI/UX Design", "Web Development", "App Development"],
@@ -15,7 +16,7 @@ export const metadata = {
   openGraph: {
     title: "Faiz Ali | Fullstack Developer",
     description: "Premium Portfolio of Faiz Ali, Frontend Web & Mobile Developer.",
-    url: 'https://www.faizali.dev',
+    url: 'https://faiz-ali-dev.vercel.app/',
     siteName: 'Faiz Ali Portfolio',
     images: [
       {
@@ -42,9 +43,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased dark scroll-smooth`}>
-      <body className="min-h-full bg-slate-950 text-slate-50 font-sans selection:bg-cyan-500/30 selection:text-cyan-200">
-        {children}
+    <html lang="en" className={`${inter.variable} h-full antialiased dark`}>
+      <body className="min-h-full bg-slate-950 text-slate-50 font-sans selection:bg-cyan-500/30 selection:text-cyan-200 ">
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );

@@ -62,7 +62,7 @@ export default function Experience() {
   const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
-    <section id="experience" className="py-12 bg-[#0c0c0c] relative" ref={containerRef}>
+    <section id="experience" className="py-12 overflow-x-hidden bg-[#0c0c0c] relative" ref={containerRef}>
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,94,0,0.05),transparent_70%)] pointer-events-none" />
       
       <div className="w-full max-w-[1536px] mx-auto px-4 lg:px-12 relative z-10">

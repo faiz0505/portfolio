@@ -1,5 +1,5 @@
 export default function sitemap() {
-  const baseUrl = 'https://www.faizali.dev'; // Update with actual domain when ready
+  const baseUrl = 'https://faiz-ali-dev.vercel.app';
 
   return [
     {
