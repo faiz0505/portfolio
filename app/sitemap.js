@@ -5,7 +5,7 @@ export default function sitemap() {
     {
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: 'yearly',
       priority: 1,
     },
     // Add additional routes here if you add separate pages (e.g., /blog, /projects)
