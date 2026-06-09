@@ -22,7 +22,7 @@ const floatingCards = [
 
 export default function Hero() {
   return (
-    <section id="home" className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-x-hidden bg-[#0c0c0c]">
+    <section id="home" className="relative min-h-screen md:min-h-[800px] lg:min-h-screen w-full flex flex-col items-center justify-center overflow-x-hidden bg-[#0c0c0c]">
       
       {/* Constellation / Glowing Background */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -88,14 +88,14 @@ export default function Hero() {
         </svg>
       </div>
 
-      <div className="relative z-20 w-full max-w-[1536px] mx-auto px-6 lg:px-12 pt-24 pb-12 md:pt-0 md:pb-0 h-full min-h-screen flex flex-col md:flex-row items-center justify-start pointer-events-none">
+      <div className="relative z-20 w-full max-w-[1536px] mx-auto px-6 lg:px-12 pt-24 pb-12 md:pt-0 md:pb-0 h-full  flex flex-col md:flex-row items-center justify-start pointer-events-none">
         
         {/* Left Content */}
         <motion.div 
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="w-full md:w-[60%] lg:w-[55%] flex flex-col items-start text-left gap-5 md:gap-6 pointer-events-auto z-30 mt-4 md:mt-0"
+          className="w-full md:w-[50%] lg:w-[55%] flex flex-col items-start text-left gap-5 md:gap-6 pointer-events-auto z-30 mt-4 md:mt-0"
         >
           {/* Badge */}
           <div className="flex items-center gap-2 bg-[#ff5e00]/10 px-4 py-2 rounded-full border border-[#ff5e00]/20 backdrop-blur-md shadow-lg shadow-[#ff5e00]/5">
@@ -238,7 +238,7 @@ export default function Hero() {
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="absolute bottom-0 right-[8%] w-[45vw] max-w-[600px] h-[85vh] z-20" 
+          className="absolute bottom-0 lg:right-[8%] right-[5%] w-[45vw] max-w-[600px] h-[85vh]  z-20" 
         >
           <Image
             src="/profile.png"
