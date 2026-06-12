@@ -1,13 +1,14 @@
 "use client";
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { ArrowRight, Users, Briefcase, Handshake, Target, Globe, Building2, Rocket } from "lucide-react";
+import { ArrowRight, Users, Briefcase, Handshake, Target, Globe, Building2, Rocket, Download, X, CheckCircle2, Loader2, Send } from "lucide-react";
 import SocialLinks from "./SocialLinks";
 
 // Floating cards data matching the reference design
 const floatingCards = [
   {
-    id :"1", icon : Building2, title : "Professional Journey", value :"3+",companiesLogo: ["https://bottrion.com/bottrion.png","/ncs-logo.png","/NoblesseTech-logo.png"],
+    id :"1", icon : Building2, title : "Professional Journey", value :"3+",companiesLogo: ["/NoblesseTech-logo.png","/ncs-logo.png","https://bottrion.com/bottrion.png",],
   },
   {
     id:"2", icon : Rocket, title :"Projects Delivered", value : "20+"
@@ -21,16 +22,54 @@ const floatingCards = [
 ];
 
 export default function Hero() {
+  const [showJokeModal, setShowJokeModal] = useState(false);
+  const [showFormModal, setShowFormModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [formData, setFormData] = useState({ name: "", email: "", role: "", reason: "Hiring", message: "" });
+  const [formStatus, setFormStatus] = useState("idle");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setFormStatus("loading");
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY,
+          ...formData,
+        }),
+      });
+      const result = await response.json();
+      if (result.success) {
+        setFormStatus("success");
+        setFormData({ name: "", email: "", role: "", reason: "Hiring", message: "" });
+        setShowFormModal(false);
+        setShowSuccessModal(true);
+        setTimeout(() => setFormStatus("idle"), 5000);
+      } else {
+        setFormStatus("error");
+        setTimeout(() => setFormStatus("idle"), 5000);
+      }
+    } catch (error) {
+      setFormStatus("error");
+      setTimeout(() => setFormStatus("idle"), 5000);
+    }
+  };
+
   return (
     <section id="home" className="relative min-h-screen md:min-h-[800px] lg:min-h-screen w-full flex flex-col items-center justify-center overflow-x-hidden bg-[#0c0c0c]">
       
       {/* Constellation / Glowing Background */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         {/* Core Glow */}
-        <div className="absolute top-[40%] right-[-10%] w-[800px] h-[800px] bg-[#ff5e00] rounded-full blur-[150px] opacity-30 animate-pulse" />
+        <div className="absolute top-[40%] right-[-10%] w-[400px] h-[400px] md:w-[800px] md:h-[800px] bg-[#ff5e00] rounded-full blur-[80px] md:blur-[150px] opacity-30 animate-pulse" />
         
-        {/* Intricate Network SVG */}
-        <svg className="absolute inset-0 w-full h-full z-0" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        {/* Intricate Network SVG - Hidden on mobile to improve performance */}
+        <svg className="absolute inset-0 w-full h-full z-0 hidden md:block" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
           <defs>
             <filter id="superglow" x="-50%" y="-50%" width="200%" height="200%">
               <feGaussianBlur stdDeviation="3" result="blur" />
@@ -112,7 +151,7 @@ export default function Hero() {
           
           {/* Description */}
           <p className="text-white/60 text-xs md:text-lg max-w-[550px] leading-relaxed">
-            I’m Faiz Ali, co-founder of Xceler Media. We help businesses launch fast, scalable digital products through web development, app development, and strategic digital marketing.
+            I'm Faiz Ali, co-founder of Xceler Media. We help businesses launch fast, scalable digital products through web development, app development, and strategic digital marketing.
           </p>
 
           {/* Button Group */}
@@ -123,10 +162,10 @@ export default function Hero() {
                 <ArrowRight size={16} />
               </div>
             </a>
-            <a href="#contact" className="flex items-center gap-3 bg-transparent border border-white/10 hover:bg-white/5 hover:border-white/20 text-white px-3 sm:px-8 py-2 md:py-3.5 rounded-full font-medium transition-all text-xs sm:text-base">
-              Work With Me
-              <Users size={18} className="text-white/50" />
-            </a>
+            <button onClick={() => setShowJokeModal(true)} className="flex items-center gap-3 bg-transparent border border-white/10 hover:bg-white/5 hover:border-white/20 text-white px-3 sm:px-8 py-2 md:py-3.5 rounded-full font-medium transition-all text-xs sm:text-base cursor-pointer">
+              Download CV
+              <Download size={18} className="text-white/50" />
+            </button>
           </div>
         </motion.div>
 
@@ -183,7 +222,7 @@ export default function Hero() {
                       <div className="flex items-center gap-2">
                         <div className="flex">
                           {card.companiesLogo.map((logo, j) => (
-                            <div key={j} className="w-4 h-4 rounded-full border border-[#0c0c0c] bg-white/5 relative -ml-1.5 first:ml-0 overflow-hidden">
+                            <div key={j} className="w-4 h-4 rounded-full border border-[#0c0c0c] bg-secondary relative -ml-1.5 first:ml-0 overflow-hidden">
                                <img src={logo} alt="Company" className="object-cover w-full h-full" />
                             </div>
                           ))}
@@ -323,6 +362,199 @@ export default function Hero() {
 
       {/* Gradient Bottom Overlay */}
       <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0c0c0c] to-transparent z-10 pointer-events-none" />
+
+      {/* Modals */}
+      <AnimatePresence>
+        {showJokeModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="bg-[#161513] border border-white/10 rounded-2xl p-6 md:p-8 max-w-md w-full shadow-2xl relative"
+            >
+              <div className="flex flex-col items-center text-center gap-6">
+                <div className="w-16 h-16 rounded-full bg-[#ff5e00]/10 flex items-center justify-center text-[#ff5e00] mb-2 shadow-[0_0_20px_rgba(255,94,0,0.2)] text-3xl">
+                  😅
+                </div>
+                <h3 className="text-2xl font-bold text-white tracking-tight">Kya ye portfolio kaafi nahi hai?</h3>
+                <p className="text-white/60 text-sm leading-relaxed">
+                  Just kidding! But seriously, my online presence should tell you everything you need to know.
+                </p>
+                <div className="flex flex-col w-full gap-3 mt-2">
+                  <button
+                    onClick={() => setShowJokeModal(false)}
+                    className="w-full py-3.5 bg-linear-to-r from-[#ff5e00] to-[#e65500] hover:opacity-90 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(255,94,0,0.3)]"
+                  >
+                    Haan, ye kaafi hai
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowJokeModal(false);
+                      setShowFormModal(true);
+                    }}
+                    className="w-full py-3.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white/80 hover:text-white rounded-xl font-medium transition-all"
+                  >
+                    Nahi, mujhe CV chahiye
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+
+        {showFormModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm overflow-y-auto"
+          >
+            <div className="min-h-screen py-8 flex items-center justify-center w-full">
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                className="bg-[#161513] border border-white/10 rounded-2xl p-6 md:p-8 max-w-lg w-full shadow-2xl relative"
+              >
+                <button 
+                  onClick={() => setShowFormModal(false)}
+                  className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+                
+                <div className="mb-6 pr-6">
+                  <h3 className="text-2xl font-bold text-white tracking-tight mb-2">Request CV</h3>
+                  <p className="text-white/60 text-sm leading-relaxed">
+                    I haven't updated my resume yet. If you want, please fill the form and I'll send it via email as soon as possible.
+                  </p>
+                </div>
+
+                <form className="space-y-4" onSubmit={handleSubmit}>
+                  <div>
+                    <label className="block text-xs text-[#ff5e00] mb-1.5 uppercase tracking-wider">Name</label>
+                    <input 
+                      type="text" 
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-4 py-2.5 rounded-xl bg-[#0c0c0c] border border-white/10 text-white focus:outline-none focus:border-[#ff5e00]/50 focus:shadow-[0_0_15px_rgba(255,94,0,0.2)] transition-all text-sm"
+                      placeholder="Your name"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-[#ff5e00] mb-1.5 uppercase tracking-wider">Email</label>
+                    <input 
+                      type="email" 
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full px-4 py-2.5 rounded-xl bg-[#0c0c0c] border border-white/10 text-white focus:outline-none focus:border-[#ff5e00]/50 focus:shadow-[0_0_15px_rgba(255,94,0,0.2)] transition-all text-sm"
+                      placeholder="Your email"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs text-[#ff5e00] mb-1.5 uppercase tracking-wider">Role</label>
+                      <input 
+                        type="text" 
+                        required
+                        value={formData.role}
+                        onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                        className="w-full px-4 py-2.5 rounded-xl bg-[#0c0c0c] border border-white/10 text-white focus:outline-none focus:border-[#ff5e00]/50 focus:shadow-[0_0_15px_rgba(255,94,0,0.2)] transition-all text-sm"
+                        placeholder="Your role"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-[#ff5e00] mb-1.5 uppercase tracking-wider">Reason</label>
+                      <select 
+                        required
+                        value={formData.reason}
+                        onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
+                        className="w-full px-4 py-2.5 rounded-xl bg-[#0c0c0c] border border-white/10 text-white focus:outline-none focus:border-[#ff5e00]/50 focus:shadow-[0_0_15px_rgba(255,94,0,0.2)] transition-all text-sm appearance-none"
+                      >
+                        <option value="Hiring">Hiring</option>
+                        <option value="Inspiration">Inspiration</option>
+                        <option value="Networking">Networking</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs text-[#ff5e00] mb-1.5 uppercase tracking-wider">Message/Note</label>
+                    <textarea 
+                      rows={3}
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      className="w-full px-4 py-2.5 rounded-xl bg-[#0c0c0c] border border-white/10 text-white focus:outline-none focus:border-[#ff5e00]/50 focus:shadow-[0_0_15px_rgba(255,94,0,0.2)] transition-all text-sm"
+                      placeholder="Any additional notes..."
+                    />
+                  </div>
+                  
+                  <button 
+                    type="submit"
+                    disabled={formStatus === "loading"}
+                    className="w-full mt-2 py-3.5 bg-linear-to-r from-[#ff5e00] to-[#e65500] hover:opacity-90 disabled:opacity-50 text-white font-bold tracking-widest uppercase rounded-xl transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,94,0,0.3)]"
+                  >
+                    {formStatus === "loading" ? (
+                      <>Sending... <Loader2 className="w-5 h-5 animate-spin" /></>
+                    ) : formStatus === "error" ? (
+                      <>Failed to Send <X className="w-5 h-5" /></>
+                    ) : (
+                      <>Request CV <Send className="w-5 h-5" /></>
+                    )}
+                  </button>
+                </form>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+
+        {showSuccessModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="bg-[#161513] border border-white/10 rounded-2xl p-6 md:p-8 max-w-sm w-full shadow-2xl relative"
+            >
+              <button 
+                onClick={() => setShowSuccessModal(false)}
+                className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              
+              <div className="flex flex-col items-center text-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-[#10b981]/10 flex items-center justify-center text-[#10b981] mb-2 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                  <CheckCircle2 className="w-8 h-8" />
+                </div>
+                <h3 className="text-2xl font-bold text-white tracking-tight">Request Sent!</h3>
+                <p className="text-white/60 text-sm leading-relaxed">
+                  Thank you! I will send my CV to your email as soon as possible.
+                </p>
+                <button
+                  onClick={() => setShowSuccessModal(false)}
+                  className="mt-4 w-full py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl font-medium transition-all"
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </section>
   );
