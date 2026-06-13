@@ -222,7 +222,7 @@ export default function Hero() {
                       <div className="flex items-center gap-2">
                         <div className="flex">
                           {card.companiesLogo.map((logo, j) => (
-                            <div key={j} className="w-4 h-4 rounded-full border border-[#0c0c0c] bg-secondary relative -ml-1.5 first:ml-0 overflow-hidden">
+                            <div key={j} className="w-4 h-4 rounded-full border border-[#0c0c0c] bg-[#1c1917] relative -ml-0.5 first:ml-0 overflow-hidden">
                                <img src={logo} alt="Company" className="object-cover w-full h-full" />
                             </div>
                           ))}
@@ -277,7 +277,7 @@ export default function Hero() {
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="absolute bottom-0 lg:right-[8%] right-[5%] w-[45vw] max-w-[600px] h-[85vh]  z-20" 
+          className="absolute bottom-0 lg:right-[8%] right-[5%] w-[45vw] max-w-150 h-[85vh]  z-20" 
         >
           <Image
             src="/profile.png"
